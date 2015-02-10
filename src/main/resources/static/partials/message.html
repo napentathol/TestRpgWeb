@@ -1,0 +1,7 @@
+<div class="input-group input-group-sm message-input-group" ng-keyup="$event.keyCode == 13 ? sendMessage() : null">
+    <input style="width: 20%" type="text" class="form-control" placeholder="Name" ng-model="name">
+    <input style="width: 80%" type="text" class="form-control" placeholder="Message" ng-model="msg">
+    <div class="input-group-btn">
+        <button class="btn btn-primary" ng-click="sendMessage()">Send!</button>
+    </div>
+</div>
