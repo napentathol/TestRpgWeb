@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 public class MessageController {
 
     @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
+    @SendTo("/topic/message")
     public Message greeting(final Message message) {
         final Message retVal = new Message();
 
@@ -19,11 +19,13 @@ public class MessageController {
     }
 
     @MessageMapping("/message")
-    @SendTo("/topic/greetings")
+    @SendTo("/topic/message")
     public Message message(final Message message) {
         return message;
     }
 
+    @MessageMapping("/roll")
+    @SendTo("/topic/message")
     public Message roll(final Die die) {
         final Message message = new Message();
 

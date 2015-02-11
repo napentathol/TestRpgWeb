@@ -36,9 +36,30 @@
     outline: 1px solid slategrey;
 }
 
-.message-input-group {
+dice-input .message-input-group,
+messaging-input .message-input-group {
+    position: absolute;
+    bottom:         10px;
+    margin-left:    110px;
+    margin-right:   10px;
+}
+
+.input-chooser {
     position: absolute;
     bottom:         10px;
     margin-left:    10px;
-    margin-right:   10px;
+}
+
+.input-chooser button {
+    width: 90px;
+}
+
+.user-dropdown ul {
+    background-color: #444;
+}
+
+.user-dropdown li {
+    margin: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
 }

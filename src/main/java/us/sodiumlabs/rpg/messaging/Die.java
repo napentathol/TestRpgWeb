@@ -64,12 +64,15 @@ public class Die {
 
     @JsonIgnore
     public String rollString() {
+        if(num < 1) return "ERROR: number of dice less than 1!";
+        if(val < 1) return "ERROR: die value less than 1!";
+
         String rollString = "Rolled: " + num + "d" + val + "+" + add + "; (";
 
         final int[] rollArr = rollArray(num, val);
 
         for (int i = 0; i < rollArr.length; i++) {
-            rollString += rollArr[i] + (i == rollArr.length - 1 ? " + " : ") + " + add + " = ");
+            rollString += rollArr[i] + (i != rollArr.length - 1 ? " + " : ") + " + add + " = ");
         }
 
         rollString += Arrays.stream(rollArr).sum() + add;

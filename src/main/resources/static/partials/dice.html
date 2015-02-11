@@ -1,0 +1,20 @@
+<div class="input-group input-group-sm message-input-group" ng-keyup="$event.keyCode == 13 ? sendMessage() : null">
+    <div class="input-group-btn dropup">
+        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">PLACEHOLDER! <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a>TEST</a></li>
+            <li><a>CHUCK</a></li>
+            <li><a>TESTA</a></li>
+        </ul>
+    </div>
+    <input type="text" class="form-control" placeholder="Name" ng-model="name">
+    <span class="input-group-addon"> : </span>
+    <input type="number" class="form-control" placeholder="1" ng-model="num">
+    <span class="input-group-addon"> d </span>
+    <input type="number" class="form-control" placeholder="20" ng-model="val">
+    <span class="input-group-addon"> + </span>
+    <input type="number" class="form-control" placeholder="0" ng-model="add">
+    <div class="input-group-btn">
+        <button class="btn btn-primary" ng-click="sendDie()">Send!</button>
+    </div>
+</div>
