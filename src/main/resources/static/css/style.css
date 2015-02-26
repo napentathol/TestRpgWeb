@@ -63,3 +63,15 @@ messaging-input .message-input-group {
     border: 1px solid #dcdcdc;
     border-radius: 5px;
 }
+
+draw-canvas, draw-canvas canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+canvas {
+    background-color: #ffffff;
+}

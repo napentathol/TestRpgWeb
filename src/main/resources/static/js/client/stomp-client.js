@@ -21,6 +21,7 @@ if(angular.isUndefined(rpg)) {
         var connected = false;
         var stompClient = null;
         var messageHandlers = [];
+        var lineHandlers = [];
         var that = this;
 
         /**
@@ -41,8 +42,13 @@ if(angular.isUndefined(rpg)) {
             stompClient.connect({}, function(frame) {
                 connected = true;
                 console.log('Connected: ' + frame);
+
                 stompClient.subscribe('/topic/message', function(greeting){
                     that.showGreeting(JSON.parse(greeting.body));
+                });
+
+                stompClient.subscribe('/topic/draw', function(line){
+                    that.showLine(JSON.parse(line.body));
                 });
             });
         };
@@ -104,15 +110,49 @@ if(angular.isUndefined(rpg)) {
         };
 
         /**
-         * Shows a greeting and logs a message.
+         * Sends a line.
+         *
+         * @param x - point 1 x.
+         * @param y - point 1 y.
+         * @param nx - point 2 x.
+         * @param ny - point 2 y.
+         * @param color - the color to print with.
+         */
+        this.sendLine = function(x, y, nx, ny, color) {
+            var line = {
+                'x' : x,
+                'y' : y,
+                'nx' : nx,
+                'ny' : ny,
+                'color' : color
+            };
+
+            stompClient.send(
+                '/app/draw',
+                {},
+                JSON.stringify(line)
+            );
+        };
+
+        /**
+         * Shows a message.
          *
          * @param message - the message to log.
          */
         this.showGreeting = function(message) {
-            console.log(message);
-
             for(var i in messageHandlers){
                 messageHandlers[i](message);
+            }
+        };
+
+        /**
+         * Shows a line.
+         *
+         * @param line - the message to log.
+         */
+        this.showLine = function(line) {
+            for(var i in lineHandlers){
+                lineHandlers[i](line);
             }
         };
 
@@ -123,8 +163,20 @@ if(angular.isUndefined(rpg)) {
          */
         this.addMessageHandler = function handler(handler) {
             if(typeof handler === 'function'
-                    && handler.length === 1) {
+                && handler.length === 1) {
                 messageHandlers.push(handler);
+            }
+        };
+
+        /**
+         * Adds a line handler.
+         *
+         * @param handler - line handler.
+         */
+        this.addLineHandler = function handler(handler) {
+            if(typeof handler === 'function'
+                    && handler.length === 1) {
+                lineHandlers.push(handler);
             }
         };
 
@@ -179,6 +231,78 @@ if(angular.isUndefined(rpg)) {
             },
             restrict : 'E',
             templateUrl : 'partials/dice.html'
+        });
+    };
+
+    /**
+     * Drawing Canvas Directive.
+     *
+     * @param StompClient - Stomp Client Service.
+     * @returns {{controller: Function, restrict: string, templateUrl: string}}
+     * @constructor - constructs a drawing canvas.
+     */
+    var DrawDirective = function(StompClient) {
+        var prev = {
+            x:0,
+            y:0
+        };
+
+        return ({
+            controller : function($scope) {
+                $scope.sendLine = function(event) {
+                    StompClient.sendLine(
+                        event.offsetX,
+                        event.offsetY,
+                        0
+                    )
+                };
+
+                $scope.isDrawing = false;
+            },
+            restrict : 'E',
+            templateUrl : 'partials/draw.html',
+            link : function(scope, element, attr) {
+                var canvas = element.children(0);
+
+                var time = $.now();
+
+                console.log(canvas);
+
+                canvas.bind('mousedown', function(e){
+                    scope.isDrawing = true;
+
+                    prev.x = e.offsetX;
+                    prev.y = e.offsetY;
+                });
+
+                canvas.bind('mouseup mouseleave', function(e){
+                    scope.isDrawing = false;
+                });
+
+                canvas.bind('mousemove', function(e) {
+                    if(scope.isDrawing && $.now() - time > 30) {
+                        StompClient.sendLine(
+                            e.offsetX,
+                            e.offsetY,
+                            prev.x,
+                            prev.y,
+                            0
+                        );
+
+                        prev.x = e.offsetX;
+                        prev.y = e.offsetY;
+
+                        time = $.now();
+                    }
+                });
+                var ctx = canvas[0].getContext('2d');
+
+                StompClient.addLineHandler(function(line){
+                    ctx.moveTo(line.x, line.y);
+                    ctx.lineTo(line.nx, line.ny);
+                    ctx.stroke();
+                })
+            }
         });
     };
 
@@ -278,5 +402,6 @@ if(angular.isUndefined(rpg)) {
     rpg.$ng.directive('messagingInput', ['StompClient', MessageDirective]);
     rpg.$ng.directive('diceInput', ['StompClient', DiceDirective]);
     rpg.$ng.directive('messagingWell', ['StompClient', WellDirective]);
+    rpg.$ng.directive('drawCanvas', ['StompClient', DrawDirective]);
     rpg.$ng.directive('stopEvent', [StopEventDirective]);
 })();

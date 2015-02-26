@@ -34,4 +34,10 @@ public class MessageController {
 
         return message;
     }
+
+    @MessageMapping("/draw")
+    @SendTo("/topic/draw")
+    public Line drawLine(final Line line) {
+        return line;
+    }
 }
