@@ -1,3 +1,6 @@
+def versionNo = '0.1.0.RELEASE'
+def artifactName = 'test-rpg-web'
+
 buildscript {
     repositories {
         maven { url "https://repo.spring.io/libs-release" }
@@ -13,10 +16,19 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: 'war'
 
 jar {
-    baseName = 'test-rpg-web'
-    version =  '0.1.0'
+    baseName = artifactName
+    version = versionNo
+    manifest {
+        attributes 'Main-Class' : 'us.sodiumlabs.rpg.Application'
+    }
+}
+
+war {
+    baseName = artifactName
+    version = versionNo
 }
 
 sourceCompatibility = 1.8
@@ -32,6 +44,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-websocket")
     compile("org.springframework:spring-messaging")
     testCompile("junit:junit")
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 
 task wrapper(type: Wrapper) {

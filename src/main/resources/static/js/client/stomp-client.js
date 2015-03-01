@@ -37,7 +37,7 @@ if(angular.isUndefined(rpg)) {
          * Connect to the websocket server.
          */
         this.connect = function () {
-            var socket = new SockJS('/hello');
+            var socket = new SockJS(window.location.pathname + 'hello');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 connected = true;
