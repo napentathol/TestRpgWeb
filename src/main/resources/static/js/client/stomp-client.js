@@ -350,13 +350,21 @@ if(angular.isUndefined(rpg)) {
      * Well Directive.
      *
      * @param StompClient - Stomp Client service.
+     * @param $http - http service.
      * @returns {{controller: Function, restrict: string, templateUrl: string}} - directive.
      * @constructor - constructs a Well Directive.
      */
-    var WellDirective = function(StompClient) {
+    var WellDirective = function(StompClient, $http) {
         return ({
             controller : function($scope) {
                 $scope.messages = [];
+
+                $http.get("message/list")
+                .success(function(data, status, headers, config){
+                    $scope.messages = data;
+                }).error(function(data, status, headers, config){
+                    console.log("Error occurred: " + data);
+                });
 
                 function handler(message) {
                     $scope.messages.push(message);
@@ -401,7 +409,7 @@ if(angular.isUndefined(rpg)) {
     rpg.$ng.directive('inputManager', [InputManagerDirective]);
     rpg.$ng.directive('messagingInput', ['StompClient', MessageDirective]);
     rpg.$ng.directive('diceInput', ['StompClient', DiceDirective]);
-    rpg.$ng.directive('messagingWell', ['StompClient', WellDirective]);
+    rpg.$ng.directive('messagingWell', ['StompClient', '$http', WellDirective]);
     rpg.$ng.directive('drawCanvas', ['StompClient', DrawDirective]);
     rpg.$ng.directive('stopEvent', [StopEventDirective]);
 })();

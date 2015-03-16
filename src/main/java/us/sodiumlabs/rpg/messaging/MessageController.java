@@ -1,11 +1,16 @@
 package us.sodiumlabs.rpg.messaging;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import us.sodiumlabs.rpg.services.MessageService;
 
 @Controller
 public class MessageController {
+
+    @Autowired
+    private MessageService messageService;
 
     @MessageMapping("/hello")
     @SendTo("/topic/message")
@@ -15,12 +20,15 @@ public class MessageController {
         retVal.setUsername(message.getUsername());
         retVal.setPayload("Hello, " + message.getPayload() + "!");
 
+        messageService.persistMessage(retVal);
         return retVal;
     }
 
     @MessageMapping("/message")
     @SendTo("/topic/message")
     public Message message(final Message message) {
+        messageService.persistMessage(message);
+
         return message;
     }
 
@@ -32,6 +40,7 @@ public class MessageController {
         message.setUsername(die.getUsername());
         message.setPayload(die.rollString());
 
+        messageService.persistMessage(message);
         return message;
     }
 
