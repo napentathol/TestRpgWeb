@@ -1,7 +1,7 @@
 package us.sodiumlabs.rpg.services;
 
 import org.springframework.stereotype.Service;
-import us.sodiumlabs.rpg.messaging.Message;
+import us.sodiumlabs.rpg.data.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 public class DefaultMessageService implements MessageService {
     private static final int MAX_MESSAGES =  150;
 
-    private final List<Message> messages = new ArrayList<Message>();
+    private final List<Message> messages = new ArrayList<>();
 
     @Override
     public void persistMessage(final Message message) {

@@ -208,7 +208,20 @@ if(angular.isUndefined(rpg)) {
             controller : function($scope) {
                 $scope.sendMessage = function() {
                     StompClient.sendMessage($scope.name, $scope.msg);
-                }
+                };
+
+                $scope.drawActive = false;
+                $scope.inputActive = true;
+
+                $scope.showDraw = function() {
+                    $scope.drawActive = true;
+                    $scope.inputActive = false;
+                };
+
+                $scope.showInput = function() {
+                    $scope.drawActive = false;
+                    $scope.inputActive = true;
+                };
             },
             restrict : 'E',
             templateUrl : 'partials/message.html'

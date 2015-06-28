@@ -1,9 +1,8 @@
-package us.sodiumlabs.rpg.messaging;
+package us.sodiumlabs.rpg.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class Die {
     private String username;

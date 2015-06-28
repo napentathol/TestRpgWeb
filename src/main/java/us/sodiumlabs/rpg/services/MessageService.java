@@ -1,6 +1,6 @@
 package us.sodiumlabs.rpg.services;
 
-import us.sodiumlabs.rpg.messaging.Message;
+import us.sodiumlabs.rpg.data.Message;
 
 import java.util.List;
 

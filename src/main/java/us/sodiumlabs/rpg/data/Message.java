@@ -1,4 +1,4 @@
-package us.sodiumlabs.rpg.messaging;
+package us.sodiumlabs.rpg.data;
 
 public class Message {
 
