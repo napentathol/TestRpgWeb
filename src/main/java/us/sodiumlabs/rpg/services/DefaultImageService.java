@@ -1,6 +1,5 @@
 package us.sodiumlabs.rpg.services;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import us.sodiumlabs.rpg.data.Line;
 
 import javax.imageio.ImageIO;
@@ -8,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 
 public class DefaultImageService implements ImageService {
 
@@ -39,6 +39,6 @@ public class DefaultImageService implements ImageService {
         ImageIO.write(image, "PNG", out);
         final byte[] bytes = out.toByteArray();
 
-        return Base64.encode(bytes);
+        return Base64.getUrlEncoder().encodeToString(bytes);
     }
 }

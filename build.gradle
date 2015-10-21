@@ -3,12 +3,12 @@ def artifactName = 'test-rpg-web'
 
 buildscript {
     repositories {
-        maven { url "https://repo.spring.io/libs-release" }
+        maven { url 'https://repo.spring.io/libs-release' }
         mavenLocal()
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.10.RELEASE")
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.1.10.RELEASE')
     }
 }
 
@@ -37,14 +37,15 @@ targetCompatibility = 1.8
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url "https://repo.spring.io/libs-release" }
+    maven { url 'https://repo.spring.io/libs-release' }
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-websocket")
-    compile("org.springframework:spring-messaging")
-    testCompile("junit:junit")
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    //compile('org.apache.commons:commons-lang3:3.4')
+    compile('org.springframework.boot:spring-boot-starter-websocket:1.1.10.RELEASE')
+    compile('org.springframework:spring-messaging:4.0.8.RELEASE')
+    testCompile('junit:junit:4.11')
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat:1.1.10.RELEASE'
 }
 
 task wrapper(type: Wrapper) {
